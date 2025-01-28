@@ -15,54 +15,51 @@ program main
   
   d = 2
   N = 10
-  den = 45
 
   allocate(rede2d(0:(N-1),0:(N-1)))
 
   allocate(dados(0:1,0:(N-1)))
 
-  rede2d = -1
-
   call gerador%init(seed)
 
-  m = 0
+  do den = 0, N ** 2
+    rede2d = -1
 
-  do while (m < den)
-    l = int(N * gerador%rnd())
-    c = int(N * gerador%rnd())
+    m = 0
 
-    if (rede2d(l,c) .ne. 1) then
-      rede2d(l,c) = 1
-      m = m + 1
-    end if
-  end do
+    do while (m < den)
+      l = int(N * gerador%rnd())
+      c = int(N * gerador%rnd())
 
-  t = 0
-
-  call emq(rede2d, N)
-
-  do while (uni(rede2d,N) .eqv. .false.)
-    l = int(N * gerador%rnd())
-    c = int(N * gerador%rnd())
-
-    l2 = -1
-    c2 = -1
-
-    do while (l2 < 0 .or. l2 > (N - 1) .or. c2 < 0 .or. c2 > (N - 1))
-      ang = int(4 * gerador%rnd()) * asin(1.0)
-
-      l2 = l + int(cos(ang))
-      c2 = c + int(sin(ang))
+      if (rede2d(l,c) .ne. 1) then
+        rede2d(l,c) = 1
+        m = m + 1
+      end if
     end do
-    rede2d(l,c) = rede2d(l2,c2)
-    t = t + 1
+
+    t = 0
+
+    do while (uni(rede2d,N) .eqv. .false.)
+      l = int(N * gerador%rnd())
+      c = int(N * gerador%rnd())
+
+      l2 = -1
+      c2 = -1
+
+      do while (l2 < 0 .or. l2 > (N - 1) .or. c2 < 0 .or. c2 > (N - 1))
+        ang = int(4 * gerador%rnd()) * asin(1.0)
+
+        l2 = l + int(cos(ang))
+        c2 = c + int(sin(ang))
+      end do
+      rede2d(l,c) = rede2d(l2,c2)
+      t = t + 1
+    end do
+
+    print*, "densidade =", den
+    print*, "valor predominante =", rede2d(0,0)
+    print*, "número de iterações =", t
+    print*, ""
   end do
 
-  print*, "Nova Matriz"
-
-  call emq(rede2d, N)
-
-  print*, "Número de iterações"
-
-  print*, t
 end program main
