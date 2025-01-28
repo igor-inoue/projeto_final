@@ -7,7 +7,7 @@ program main
   integer(kind=i4) :: seed = 213123
   type(rndgen) :: gerador
 
-  integer(kind=i4) :: d, N, m, l, c, ang, den
+  integer(kind=i4) :: d, N, i, l, c, ang, den
   integer(kind=i4), allocatable :: rede1d(:), rede2d(:,:), rede3d(:,:,:), dados(:,:)
   real(kind=sp) :: r0, r1
   
@@ -25,19 +25,19 @@ program main
 
   m = 0
 
-  do while (m < den)
+  do while (i < den)
     l = int(N * gerador%rnd())
     c = int(N * gerador%rnd())
 
     if (rede2d(l,c) .ne. 1) then
       rede2d(l,c) = 1
-      m = m + 1
+      i = i + 1
     end if
   end do
 
   call emq(rede2d, N)
 
-  do m = 0, (N-1)
+  do i = 0, (N-1)
     l = int(N * gerador%rnd())
     c = int(N * gerador%rnd())
 
