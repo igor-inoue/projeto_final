@@ -5,65 +5,75 @@ program main
   use m_uni
   implicit none
 
-  integer(kind=i4) :: seed = 213123
+  integer(kind=i4) :: seed = 1!213123
   type(rndgen) :: gerador
 
-  integer(kind=i4) :: d, N, i, l, c, den, l2, c2
+  integer(kind=i4) :: arquivo1
+  integer(kind=i4) :: d, N, i, l, c, den, l2, c2, Nmax, m
   integer(kind=i4), allocatable :: rede1d(:), rede2d(:,:), rede3d(:,:,:), dados(:,:)
   integer(kind=i8) :: t, tsoma
   real(kind=sp) :: r0, r1, ang
   real(kind=dp) :: tmed
   
   d = 2
-  N = 10
+  Nmax = 12
 
-  allocate(rede2d(0:(N-1),0:(N-1)))
+  allocate(rede2d(0:(Nmax-1),0:(Nmax-1)))
 
-  allocate(dados(0:1,0:(N-1)))
+  !allocate(dados(0:(Nmax-1)), 0:1)
 
   call gerador%init(seed)
 
-  tsoma = 0
+  open(newunit=arquivo1, file='dados.dat')
 
-  do den = 0, N ** 2
-    do i = 1, 20
-      rede2d = -1
+  do N = 1, Nmax
+    tsoma = 0
 
-      m = 0
+    do den = 0, N ** 2
+      do i = 1, 20
+        rede2d = -1
 
-      do while (m < den)
-        l = int(N * gerador%rnd())
-        c = int(N * gerador%rnd())
+        m = 0
 
-        if (rede2d(l,c) .ne. 1) then
-          rede2d(l,c) = 1
-          m = m + 1
-        end if
-      end do
+        do while (m < den)
+          l = int(N * gerador%rnd())
+          c = int(N * gerador%rnd())
 
-      t = 0
-
-      do while (uni(rede2d,N) .eqv. .false.)
-        l = int(N * gerador%rnd())
-        c = int(N * gerador%rnd())
-
-        l2 = -1
-        c2 = -1
-
-        do while (l2 < 0 .or. l2 > (N - 1) .or. c2 < 0 .or. c2 > (N - 1))
-          ang = int(4 * gerador%rnd()) * asin(1.0)
-
-          l2 = l + int(cos(ang))
-          c2 = c + int(sin(ang))
+          if (rede2d(l,c) .ne. 1) then
+            rede2d(l,c) = 1
+            m = m + 1
+          end if
         end do
-        rede2d(l,c) = rede2d(l2,c2)
-        t = t + 1
+
+        t = 0
+
+        do while (uni(rede2d,N) .eqv. .false.)
+          l = int(N * gerador%rnd())
+          c = int(N * gerador%rnd())
+
+          l2 = -1
+          c2 = -1
+
+          do while (l2 < 0 .or. l2 > (N - 1) .or. c2 < 0 .or. c2 > (N - 1))
+            ang = int(4 * gerador%rnd()) * asin(1.0)
+
+            l2 = l + int(cos(ang))
+            c2 = c + int(sin(ang))
+          end do
+          rede2d(l,c) = rede2d(l2,c2)
+          t = t + 1
+        end do
       end do
+      tsoma = tsoma + t
     end do
-    tsoma = tsoma + t
+
+    tmed = tsoma / ((N**2 + 1) * 20)
+
+    print*, N, tmed
+
+    write(arquivo1,*) N, tmed
+
   end do
 
-  tmed = tsoma / ((N**2 + 1) * 20)
-
-  print*, N, tmed
+  close(arquivo1)
 end program main

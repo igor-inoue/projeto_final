@@ -1,8 +1,6 @@
 module m_uni
     use, intrinsic :: iso_fortran_env, only: sp => real32, dp => real64, i4 => int32, i8 => int64
     implicit none
-
-    integer(kind=i4) :: m
     
 contains
     
