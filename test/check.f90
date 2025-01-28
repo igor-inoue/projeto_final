@@ -6,8 +6,7 @@ program check
     integer(kind=i4), allocatable :: rede(:,:) 
     real(kind=sp) :: teste
 
-    teste = 100.7
-    N = int(teste)
+    teste = 2 * asin(1.0)
 
-    print*, N
+    print*, teste
 end program check
