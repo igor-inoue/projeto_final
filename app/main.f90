@@ -1,6 +1,7 @@
 program main
   use, intrinsic :: iso_fortran_env, only: sp => real32, dp => real64, i4 => int32, i8 => int64
   use rndgen_mod
+  use m_emq
   implicit none
 
   integer(kind=i4) :: seed = 213123
@@ -34,9 +35,7 @@ program main
     end if
   end do
 
-  do m = 0, N-1
-    print*, rede2d(m,:)
-  end do
+  call emq(rede2d, N)
 
   do m = 0, (N-1)
     l = int(N * gerador%rnd())
@@ -49,7 +48,5 @@ program main
     print*, l, c, rede2d(l,c)
   end do
 
-  do m = 0, N-1
-    print*, rede2d(m,:)
-  end do
+  call emq(rede2d, N)
 end program main
