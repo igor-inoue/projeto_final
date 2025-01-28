@@ -2,18 +2,20 @@ program main
   use, intrinsic :: iso_fortran_env, only: sp => real32, dp => real64, i4 => int32, i8 => int64
   use rndgen_mod
   use m_emq
+  use m_uni
   implicit none
 
   integer(kind=i4) :: seed = 213123
   type(rndgen) :: gerador
 
-  integer(kind=i4) :: d, N, i, l, c, ang, den
+  integer(kind=i4) :: d, N, i, l, c, den, l2, c2
   integer(kind=i4), allocatable :: rede1d(:), rede2d(:,:), rede3d(:,:,:), dados(:,:)
-  real(kind=sp) :: r0, r1
+  integer(kind=i8) :: t
+  real(kind=sp) :: r0, r1, ang
   
   d = 2
   N = 10
-  den = 3
+  den = 45
 
   allocate(rede2d(0:(N-1),0:(N-1)))
 
@@ -25,28 +27,42 @@ program main
 
   m = 0
 
-  do while (i < den)
+  do while (m < den)
     l = int(N * gerador%rnd())
     c = int(N * gerador%rnd())
 
     if (rede2d(l,c) .ne. 1) then
       rede2d(l,c) = 1
-      i = i + 1
+      m = m + 1
     end if
   end do
 
+  t = 0
+
   call emq(rede2d, N)
 
-  do i = 0, (N-1)
+  do while (uni(rede2d,N) .eqv. .false.)
     l = int(N * gerador%rnd())
     c = int(N * gerador%rnd())
 
-    ang = int(4 * gerador%rnd())
+    l2 = -1
+    c2 = -1
 
-    rede2d(l,c) = rede2d(l + cos(ang * asin(1.0)), c + sin(ang * asin(1.0)))
+    do while (l2 < 0 .or. l2 > (N - 1) .or. c2 < 0 .or. c2 > (N - 1))
+      ang = int(4 * gerador%rnd()) * asin(1.0)
 
-    print*, l, c, rede2d(l,c)
+      l2 = l + int(cos(ang))
+      c2 = c + int(sin(ang))
+    end do
+    rede2d(l,c) = rede2d(l2,c2)
+    t = t + 1
   end do
 
+  print*, "Nova Matriz"
+
   call emq(rede2d, N)
+
+  print*, "Número de iterações"
+
+  print*, t
 end program main
