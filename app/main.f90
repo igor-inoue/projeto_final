@@ -10,8 +10,9 @@ program main
 
   integer(kind=i4) :: d, N, i, l, c, den, l2, c2
   integer(kind=i4), allocatable :: rede1d(:), rede2d(:,:), rede3d(:,:,:), dados(:,:)
-  integer(kind=i8) :: t
+  integer(kind=i8) :: t, tsoma
   real(kind=sp) :: r0, r1, ang
+  real(kind=dp) :: tmed
   
   d = 2
   N = 10
@@ -22,8 +23,9 @@ program main
 
   call gerador%init(seed)
 
+  tsoma = 0
+
   do den = 0, N ** 2
-    print*, "densidade =", den
     do i = 1, 20
       rede2d = -1
 
@@ -57,11 +59,11 @@ program main
         rede2d(l,c) = rede2d(l2,c2)
         t = t + 1
       end do
-      print*, "valor predominante =", rede2d(0,0)
-      print*, "número de iterações =", t
-      print*, ""
     end do
-    
+    tsoma = tsoma + t
   end do
 
+  tmed = tsoma / ((N**2 + 1) * 20)
+
+  print*, N, tmed
 end program main
