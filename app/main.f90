@@ -3,12 +3,13 @@ program main
   use rndgen_mod
   use m_emq
   use m_uni
+  use m_vizinho
   implicit none
 
   integer(kind=i4) :: seed = 213123
   type(rndgen) :: gerador
 
-  integer(kind=i4) :: d, N, i, l, c, den, l2, c2
+  integer(kind=i4) :: d, N, i, l, c, den, l2, c2, m
   integer(kind=i4), allocatable :: rede1d(:), rede2d(:,:), rede3d(:,:,:), dados(:,:)
   integer(kind=i8) :: t
   real(kind=sp) :: r0, r1, ang
@@ -45,24 +46,11 @@ program main
     l = int(N * gerador%rnd())
     c = int(N * gerador%rnd())
 
-    l2 = -1
-    c2 = -1
-
-    do while (l2 < 0 .or. l2 > (N - 1) .or. c2 < 0 .or. c2 > (N - 1))
-      ang = int(4 * gerador%rnd()) * asin(1.0)
-
-      l2 = l + int(cos(ang))
-      c2 = c + int(sin(ang))
-    end do
-    rede2d(l,c) = rede2d(l2,c2)
+    rede2d(l,c) = vizinho(rede2d,N,l,c)
     t = t + 1
+    if (t > 20000) then
+      call emq(rede2d,N)
+      exit
+    end if
   end do
-
-  print*, "Nova Matriz"
-
-  call emq(rede2d, N)
-
-  print*, "Número de iterações"
-
-  print*, t
 end program main
