@@ -23,43 +23,45 @@ program main
   call gerador%init(seed)
 
   do den = 0, N ** 2
-    rede2d = -1
-
-    m = 0
-
-    do while (m < den)
-      l = int(N * gerador%rnd())
-      c = int(N * gerador%rnd())
-
-      if (rede2d(l,c) .ne. 1) then
-        rede2d(l,c) = 1
-        m = m + 1
-      end if
-    end do
-
-    t = 0
-
-    do while (uni(rede2d,N) .eqv. .false.)
-      l = int(N * gerador%rnd())
-      c = int(N * gerador%rnd())
-
-      l2 = -1
-      c2 = -1
-
-      do while (l2 < 0 .or. l2 > (N - 1) .or. c2 < 0 .or. c2 > (N - 1))
-        ang = int(4 * gerador%rnd()) * asin(1.0)
-
-        l2 = l + int(cos(ang))
-        c2 = c + int(sin(ang))
-      end do
-      rede2d(l,c) = rede2d(l2,c2)
-      t = t + 1
-    end do
-
     print*, "densidade =", den
-    print*, "valor predominante =", rede2d(0,0)
-    print*, "número de iterações =", t
-    print*, ""
+    do i = 1, 20
+      rede2d = -1
+
+      m = 0
+
+      do while (m < den)
+        l = int(N * gerador%rnd())
+        c = int(N * gerador%rnd())
+
+        if (rede2d(l,c) .ne. 1) then
+          rede2d(l,c) = 1
+          m = m + 1
+        end if
+      end do
+
+      t = 0
+
+      do while (uni(rede2d,N) .eqv. .false.)
+        l = int(N * gerador%rnd())
+        c = int(N * gerador%rnd())
+
+        l2 = -1
+        c2 = -1
+
+        do while (l2 < 0 .or. l2 > (N - 1) .or. c2 < 0 .or. c2 > (N - 1))
+          ang = int(4 * gerador%rnd()) * asin(1.0)
+
+          l2 = l + int(cos(ang))
+          c2 = c + int(sin(ang))
+        end do
+        rede2d(l,c) = rede2d(l2,c2)
+        t = t + 1
+      end do
+      print*, "valor predominante =", rede2d(0,0)
+      print*, "número de iterações =", t
+      print*, ""
+    end do
+    
   end do
 
 end program main
