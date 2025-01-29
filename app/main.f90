@@ -14,9 +14,8 @@ program main
   integer(kind=i8) :: t, tsoma, soma1
   real(kind=sp) :: r0, r1, ang1, ang2
   real(kind=dp) :: tmed, prob1
-  
-  d = 2
-  Nmax = 12
+
+  Nmax = 15
 
   allocate(rede2d(0:(Nmax-1),0:(Nmax-1)))
 
