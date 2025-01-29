@@ -16,7 +16,7 @@ program main
   real(kind=dp) :: tmed, prob1
   
   d = 2
-  Nmax = 12
+  Nmax = 15
 
   allocate(rede2d(0:(Nmax-1),0:(Nmax-1)))
 
