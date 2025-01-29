@@ -12,7 +12,7 @@ program main
   integer(kind=i4) :: d, N, i, l, c, den, l2, c2, Nmax, m
   integer(kind=i4), allocatable :: rede1d(:), rede2d(:,:), rede3d(:,:,:), dados(:,:)
   integer(kind=i8) :: t, tsoma, soma1
-  real(kind=sp) :: r0, r1, ang
+  real(kind=sp) :: r0, r1, ang1, ang2
   real(kind=dp) :: tmed, prob1
   
   d = 2
@@ -55,10 +55,11 @@ program main
           c2 = -1
 
           do while (l2 < 0 .or. l2 > (N - 1) .or. c2 < 0 .or. c2 > (N - 1))
-            ang = int(4 * gerador%rnd()) * asin(1.0)
+            ang1 = int(3 * gerador%rnd()) * (asin(1.0))
+            ang2 = int(3 * gerador%rnd()) * (asin(1.0))
 
-            l2 = l + int(cos(ang))
-            c2 = c + int(sin(ang))
+            l2 = l + int(cos(ang1))
+            c2 = c + int(cos(ang2))
           end do
           rede2d(l,c) = rede2d(l2,c2)
           t = t + 1
