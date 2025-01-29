@@ -23,7 +23,6 @@ program main
   call gerador%init(seed)
 
   open(newunit=arquivo1, file='dados.dat')
-  write(arquivo1,*) "t_med"
   open(newunit=arquivo2, file='dados2.dat')
 
   do N = 1, Nmax
