@@ -23,7 +23,7 @@ program main
   call gerador%init(seed)
 
   open(newunit=arquivo1, file='dados.dat')
-  write(arquivo1,*) "N      t_med"
+  write(arquivo1,*) "t_med"
   open(newunit=arquivo2, file='dados2.dat')
 
   do N = 1, Nmax
@@ -75,7 +75,7 @@ program main
 
     tmed = tsoma / ((N**2 + 1) * 20.0)
 
-    write(arquivo1,*) N, tmed
+    write(arquivo1,*) tmed
 
   end do
 
