@@ -10,7 +10,7 @@ program main
   type(rndgen) :: gerador
 
   integer(kind=i4) :: arquivo1, arquivo2
-  integer(kind=i4) :: d, N, i, l, c, den, l2, c2, Nmax, m]
+  integer(kind=i4) :: d, N, i, l, c, den, l2, c2, Nmax, m
   integer(kind=i4), allocatable :: rede1d(:), rede2d(:,:), rede3d(:,:,:), dados(:,:)
   integer(kind=i8) :: t, tsoma, soma1
   real(kind=sp) :: r0, r1, ang
