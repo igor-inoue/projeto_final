@@ -6,7 +6,7 @@ program main
   use m_vizinho
   implicit none
 
-  integer(kind=i4) :: seed = 213123
+  integer(kind=i4) :: seed = 1!213123
   type(rndgen) :: gerador
 
   integer(kind=i4) :: d, N, i, l, c, den, l2, c2, m
@@ -46,11 +46,7 @@ program main
     l = int(N * gerador%rnd())
     c = int(N * gerador%rnd())
 
-    rede2d(l,c) = vizinho(rede2d,N,l,c)
+    rede2d(l,c) = vizinho(rede2d,N,l,c, gerador)
     t = t + 1
-    if (t > 20000) then
-      call emq(rede2d,N)
-      exit
-    end if
   end do
 end program main
