@@ -10,7 +10,7 @@ contains
         integer(kind=i4) :: m
 
         do m = 0, D-1
-            print*, matriz(m,:)
+            print*, matriz(m,0:(D-1))
         end do
     end subroutine emq
 end module m_emq
