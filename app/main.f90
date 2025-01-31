@@ -3,13 +3,14 @@ program main
   use rndgen_mod
   use m_emq
   use m_uni
+  use m_vizinho
   implicit none
 
   integer(kind=i4) :: seed = 1!213123
   type(rndgen) :: gerador
 
   integer(kind=i4) :: arquivo1, arquivo2
-  integer(kind=i4) :: d, N, i, l, c, den, l2, c2, Nmax, m
+  integer(kind=i4) :: d, N, i, l, c, den, l2, c2, Nmax, m]
   integer(kind=i4), allocatable :: rede1d(:), rede2d(:,:), rede3d(:,:,:), dados(:,:)
   integer(kind=i8) :: t, tsoma, soma1
   real(kind=sp) :: r0, r1, ang
@@ -21,6 +22,7 @@ program main
   allocate(rede2d(0:(Nmax-1),0:(Nmax-1)))
 
   call gerador%init(seed)
+
 
   open(newunit=arquivo1, file='dados.dat')
   open(newunit=arquivo2, file='dados2.dat')
@@ -51,16 +53,7 @@ program main
           l = int(N * gerador%rnd())
           c = int(N * gerador%rnd())
 
-          l2 = -1
-          c2 = -1
-
-          do while (l2 < 0 .or. l2 > (N - 1) .or. c2 < 0 .or. c2 > (N - 1))
-            ang = int(4 * gerador%rnd()) * asin(1.0)
-
-            l2 = l + int(cos(ang))
-            c2 = c + int(sin(ang))
-          end do
-          rede2d(l,c) = rede2d(l2,c2)
+          rede2d(l,c) = vizinho(rede2d,N,l,c, gerador)
           t = t + 1
         end do
         if ( rede2d(0,0) .eq. 1 ) then
