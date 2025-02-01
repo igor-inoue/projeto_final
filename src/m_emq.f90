@@ -4,12 +4,18 @@ module m_emq
     
 contains
     
+    ! declara subrotina emq = escreve matriz quadrada
     subroutine emq(matriz,  D)
+        ! Recebe uma matriz quadrada de dimensão D e a escreve no terminal
+        
+        ! Declara a matriz, suas dimensões e uma variável m
         integer(kind=i4), allocatable, intent(in) :: matriz(:,:)
         integer(kind=i4), intent(in) :: D
         integer(kind=i4) :: m
 
+        ! Realiza um loop na variável m em todas as linhas da matriz
         do m = 0, D-1
+            ! imprime a linha m da matriz
             print*, matriz(m,:)
         end do
     end subroutine emq

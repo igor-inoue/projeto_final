@@ -4,17 +4,18 @@ program main
   use m_emq
   use m_uni
   use m_vizinho
+  use m_round
   implicit none
 
   integer(kind=i4) :: seed = 1!213123
   type(rndgen) :: gerador
 
   integer(kind=i4) :: arquivo1, arquivo2
-  integer(kind=i4) :: d, N, i, l, c, den, l2, c2, Nmax, m
+  integer(kind=i4) :: d, N, i, l, c, q, l2, c2, Nmax, m
   integer(kind=i4), allocatable :: rede1d(:), rede2d(:,:), rede3d(:,:,:), dados(:,:)
   integer(kind=i8) :: t, tsoma, soma1
   real(kind=sp) :: r0, r1, ang
-  real(kind=dp) :: tmed, prob1
+  real(kind=dp) :: tmed, prob1, den
   
   d = 2
   Nmax = 15
@@ -27,17 +28,17 @@ program main
   open(newunit=arquivo1, file='dados.dat')
   open(newunit=arquivo2, file='dados2.dat')
 
-  do N = 1, Nmax
-    tsoma = 0
-
-    do den = 0, N ** 2
+  do q = 0, 10
+    den = q / 10.0
+    do N = 1, Nmax
+      tsoma = 0
       soma1 = 0
       do i = 1, 20
         rede2d = -1
 
         m = 0
 
-        do while (m < den)
+        do while (m < round(den * N))
           l = int(N * gerador%rnd())
           c = int(N * gerador%rnd())
 
@@ -56,18 +57,20 @@ program main
           rede2d(l,c) = vizinho(rede2d,N,l,c, gerador)
           t = t + 1
         end do
+
+        tsoma = tsoma + t
+
         if ( rede2d(0,0) .eq. 1 ) then
           soma1 = soma1 + 1  
         end if
       end do
-      tsoma = tsoma + t
       prob1 = soma1 / 20.0
+
+      tmed = tsoma / 20.0
+
+      write(arquivo1,*) den, N, tmed
       write(arquivo2,*) N, den, prob1
     end do
-
-    tmed = tsoma / ((N**2 + 1) * 20.0)
-
-    write(arquivo1,*) tmed
 
   end do
 
