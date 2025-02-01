@@ -1,6 +1,7 @@
 program check
     use, intrinsic :: iso_fortran_env, only: sp => real32, dp => real64, i4 => int32, i8 => int64
     use m_uni
+    use m_emq
     implicit none
 
     integer(kind=i4), allocatable :: rede2d(:,:)
@@ -12,7 +13,6 @@ program check
   
     rede2d = -1
 
-    rede2d(1,1) = 1
-
+    call emq(rede2d,N)
     print*, uni(rede2d, N)
 end program check
